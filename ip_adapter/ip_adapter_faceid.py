@@ -231,7 +231,7 @@ class IPAdapterFaceID:
         uncond_image_prompt_embeds = uncond_image_prompt_embeds.repeat(1, num_samples, 1)
         uncond_image_prompt_embeds = uncond_image_prompt_embeds.view(bs_embed * num_samples, seq_len, -1)
 
-        if prompt_embeds = None:
+        if prompt_embeds is None:
             with torch.inference_mode():
                 prompt_embeds_, negative_prompt_embeds_ = self.pipe.encode_prompt(
                     prompt,
