@@ -207,9 +207,6 @@ class IPAdapterFaceID:
         **kwargs,
     ):
         self.set_scale(scale)
-        if prompt_embeds is not None:
-            print(prompt_embeds)
-
        
         num_prompts = faceid_embeds.size(0)
 
