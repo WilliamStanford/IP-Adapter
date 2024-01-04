@@ -196,7 +196,9 @@ class IPAdapterFaceID:
         self,
         faceid_embeds=None,
         prompt=None,
+        prompt_embeds=None,
         negative_prompt=None,
+        negative_prompt_embeds=None,
         scale=1.0,
         num_samples=4,
         seed=None,
@@ -227,16 +229,17 @@ class IPAdapterFaceID:
         uncond_image_prompt_embeds = uncond_image_prompt_embeds.repeat(1, num_samples, 1)
         uncond_image_prompt_embeds = uncond_image_prompt_embeds.view(bs_embed * num_samples, seq_len, -1)
 
-        with torch.inference_mode():
-            prompt_embeds_, negative_prompt_embeds_ = self.pipe.encode_prompt(
-                prompt,
-                device=self.device,
-                num_images_per_prompt=num_samples,
-                do_classifier_free_guidance=True,
-                negative_prompt=negative_prompt,
-            )
-            prompt_embeds = torch.cat([prompt_embeds_, image_prompt_embeds], dim=1)
-            negative_prompt_embeds = torch.cat([negative_prompt_embeds_, uncond_image_prompt_embeds], dim=1)
+        if prompt_embeds = None:
+            with torch.inference_mode():
+                prompt_embeds_, negative_prompt_embeds_ = self.pipe.encode_prompt(
+                    prompt,
+                    device=self.device,
+                    num_images_per_prompt=num_samples,
+                    do_classifier_free_guidance=True,
+                    negative_prompt=negative_prompt,
+                )
+                prompt_embeds = torch.cat([prompt_embeds_, image_prompt_embeds], dim=1)
+                negative_prompt_embeds = torch.cat([negative_prompt_embeds_, uncond_image_prompt_embeds], dim=1)
 
         generator = torch.Generator(self.device).manual_seed(seed) if seed is not None else None
         images = self.pipe(
